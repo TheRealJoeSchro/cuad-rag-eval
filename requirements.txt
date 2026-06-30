@@ -1,0 +1,21 @@
+# Core
+anthropic>=0.40.0
+openai>=1.50.0
+pyyaml>=6.0
+
+# Data / NLP
+datasets>=2.20.0        # HuggingFace datasets (CUAD source)
+tiktoken>=0.7.0         # token counting for chunking
+nltk>=3.8               # tokenization utilities
+
+# Vector store
+chromadb>=0.5.0
+
+# Eval / reporting
+pandas>=2.0
+tabulate>=0.9           # plain-text tables in reports
+tqdm>=4.66
+
+# CLI
+click>=8.1
+python-dotenv>=1.0      # load OPENAI_API_KEY / ANTHROPIC_API_KEY from .env

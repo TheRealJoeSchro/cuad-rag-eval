@@ -1,0 +1,29 @@
+# All tunable parameters. CLI flags override these values.
+
+# --- Data ---
+data_dir: data
+raw_dir: data/raw
+processed_dir: data/processed
+reports_dir: reports
+subset_size: 10          # number of contracts to pull for dev runs; null = all
+
+# --- Chunking ---
+chunk_size: 512          # target tokens per chunk
+chunk_overlap: 64        # overlap between adjacent chunks
+
+# --- Retrieval ---
+embedding_model: text-embedding-3-small   # OpenAI embedding model name
+embedding_provider: openai                # openai (only option in v1)
+retrieval_k: 5                            # top-k chunks returned per query
+vector_store: chroma                      # chroma (local, no server needed)
+
+# --- Agent / LLM ---
+llm_provider: anthropic                   # anthropic | openai
+llm_model: claude-haiku-4-5-20251001      # fast + cheap for dev; swap to sonnet for eval
+max_tokens: 512
+temperature: 0.0                          # deterministic for reproducibility
+
+# --- Eval ---
+iou_threshold: 0.5       # minimum token-overlap IoU for citation grounding to count as correct
+llm_judge_model: claude-sonnet-4-6        # model used for secondary LLM-as-judge scoring
+llm_judge_provider: anthropic
