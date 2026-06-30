@@ -1,0 +1,253 @@
+========================================================================
+CUAD RAG EVAL REPORT
+========================================================================
+Generated:       2026-06-30 12:45
+Agent model:     anthropic/claude-sonnet-4-6
+Embedding:       text-embedding-3-small
+Retrieval k:     5
+IoU threshold:   0.5
+Judge model:     anthropic/claude-sonnet-4-6
+Contracts:       10
+Total queries:   410 (132 present, 278 absent)
+
+------------------------------------------------------------------------
+HEADLINE METRICS
+------------------------------------------------------------------------
+  False-Positive Rate:           25.5%   (agent claims present when gold says absent, 71/278)
+  Citation Grounding (IoU>=0.5):   24.2%   (PRIMARY — on present clauses, 32/132)
+  Retrieval Recall@5:           65.2%   (retrieved chunk overlaps gold span, 86/132)
+  LLM-Judge Correctness:         17.1%   (SECONDARY — on present clauses, 19/111)
+
+------------------------------------------------------------------------
+BY CLAUSE PRESENCE
+------------------------------------------------------------------------
+                       Present (N=132)    Absent (N=278)
+---------------------  -----------------  ----------------
+Retrieval recall@k     65.2%              n/a
+Citation grounding     24.2%              n/a
+False positive rate    n/a                25.5%
+True negative rate     n/a                74.5%
+LLM-judge correctness  17.1%              n/a
+Avg latency (s)        5.97               3.55
+Avg tokens (in+out)    2127               1911
+
+------------------------------------------------------------------------
+CITATION MATCH DIAGNOSTICS
+------------------------------------------------------------------------
+  Exact match:            68
+  Whitespace-rescued:     0
+  Not found (true miss):  0
+  Agent returned null:    21  (agent said clause absent)
+
+------------------------------------------------------------------------
+PER CLAUSE TYPE
+------------------------------------------------------------------------
+Clause Type                           N pres    N abs  Recall@k    Citation    FP Rate    LLM-Judge
+----------------------------------  --------  -------  ----------  ----------  ---------  -----------
+Affiliate License-Licensee                 1        9  0%          0%          44%        n/a
+Affiliate License-Licensor                 0       10  n/a         n/a         30%        n/a
+Agreement Date                             8        2  25%         12%         100%       25%
+Anti-Assignment                            6        4  100%        33%         50%        17%
+Audit Rights                               3        7  100%        0%          0%         0%
+Cap On Liability                           4        6  100%        50%         17%        0%
+Change Of Control                          3        7  100%        0%          43%        0%
+Competitive Restriction Exception          2        8  50%         0%          25%        n/a
+Covenant Not To Sue                        2        8  50%         50%         0%         0%
+Document Name                             10        0  30%         10%         n/a        20%
+Effective Date                             8        2  62%         25%         100%       0%
+Exclusivity                                4        6  25%         25%         33%        0%
+Expiration Date                            9        1  89%         22%         0%         25%
+Governing Law                              9        1  89%         78%         0%         56%
+Insurance                                  4        6  75%         25%         0%         0%
+Ip Ownership Assignment                    3        7  67%         67%         43%        0%
+Irrevocable Or Perpetual License           2        8  50%         0%          38%        100%
+Joint Ip Ownership                         1        9  100%        0%          22%        0%
+License Grant                              6        4  33%         17%         0%         0%
+Liquidated Damages                         1        9  0%          0%          33%        n/a
+Minimum Commitment                         3        7  100%        33%         29%        50%
+Most Favored Nation                        0       10  n/a         n/a         0%         n/a
+No-Solicit Of Customers                    1        9  100%        0%          22%        0%
+No-Solicit Of Employees                    2        8  100%        50%         0%         50%
+Non-Compete                                4        6  75%         50%         17%        0%
+Non-Disparagement                          0       10  n/a         n/a         10%        n/a
+Non-Transferable License                   2        8  50%         0%          50%        0%
+Notice Period To Terminate Renewal         2        8  50%         50%         25%        50%
+Parties                                   10        0  40%         0%          n/a        0%
+Post-Termination Services                  3        7  67%         0%          57%        0%
+Price Restrictions                         1        9  100%        0%          33%        0%
+Renewal Term                               3        7  100%        0%          29%        0%
+Revenue/Profit Sharing                     2        8  0%          0%          12%        n/a
+Rofr/Rofo/Rofn                             1        9  100%        0%          11%        0%
+Source Code Escrow                         0       10  n/a         n/a         0%         n/a
+Termination For Convenience                4        6  100%        50%         67%        0%
+Third Party Beneficiary                    0       10  n/a         n/a         70%        n/a
+Uncapped Liability                         3        7  100%        33%         57%        100%
+Unlimited/All-You-Can-Eat-License          0       10  n/a         n/a         10%        n/a
+Volume Restriction                         2        8  0%          0%          0%         n/a
+Warranty Duration                          3        7  100%        33%         0%         33%
+
+------------------------------------------------------------------------
+FALSE-POSITIVE BREAKDOWN (absent clauses where agent claimed present)
+------------------------------------------------------------------------
+Clause Type                           FP Count
+----------------------------------  ----------
+Third Party Beneficiary                      7
+Termination For Convenience                  4
+Non-Transferable License                     4
+Affiliate License-Licensee                   4
+Uncapped Liability                           4
+Post-Termination Services                    4
+Change Of Control                            3
+Ip Ownership Assignment                      3
+Affiliate License-Licensor                   3
+Irrevocable Or Perpetual License             3
+Liquidated Damages                           3
+Price Restrictions                           3
+Notice Period To Terminate Renewal           2
+Agreement Date                               2
+Exclusivity                                  2
+Competitive Restriction Exception            2
+Minimum Commitment                           2
+Joint Ip Ownership                           2
+Effective Date                               2
+Renewal Term                                 2
+Anti-Assignment                              2
+No-Solicit Of Customers                      2
+Non-Compete                                  1
+Rofr/Rofo/Rofn                               1
+Revenue/Profit Sharing                       1
+Unlimited/All-You-Can-Eat-License            1
+Cap On Liability                             1
+Non-Disparagement                            1
+
+------------------------------------------------------------------------
+FAILURE TAXONOMY
+------------------------------------------------------------------------
+
+PRESENT CLAUSES
+  (N=132 present-clause pairs)
+
+Category              N  %      Description
+------------------  ---  -----  -----------------------------------------------------------
+SUCCESS              32  24.2%  citation IoU >= threshold
+WRONG_RETRIEVED      34  25.8%  gold chunk never retrieved; agent worked from wrong context
+WRONG_EXTRACTION     45  34.1%  right chunk retrieved; agent failed to extract correct span
+MISSED_BUT_PRESENT   21  15.9%  agent said clause absent; gold says it exists
+
+  WRONG_RETRIEVED sub-breakdown:
+     21  cited real text from wrong location (IoU=0)
+     13  gold chunk not retrieved; no usable citation
+
+  WRONG_EXTRACTION sub-breakdown:
+     30  right chunk retrieved; no verbatim citation provided
+      2  right chunk retrieved; citation sub-threshold IoU (0.000)
+      1  right chunk retrieved; citation sub-threshold IoU (0.418)
+      1  right chunk retrieved; citation sub-threshold IoU (0.128)
+      1  right chunk retrieved; citation sub-threshold IoU (0.358)
+      1  right chunk retrieved; citation sub-threshold IoU (0.342)
+      1  right chunk retrieved; citation sub-threshold IoU (0.066)
+      1  right chunk retrieved; citation sub-threshold IoU (0.317)
+      1  right chunk retrieved; citation sub-threshold IoU (0.490)
+      1  right chunk retrieved; citation sub-threshold IoU (0.432)
+      1  right chunk retrieved; citation sub-threshold IoU (0.419)
+      1  right chunk retrieved; citation sub-threshold IoU (0.113)
+      1  right chunk retrieved; citation sub-threshold IoU (0.292)
+      1  right chunk retrieved; citation sub-threshold IoU (0.413)
+      1  right chunk retrieved; citation sub-threshold IoU (0.178)
+
+  MISSED_BUT_PRESENT sub-breakdown:
+     12  retrieval also missed
+      9  right chunk retrieved; agent abstained
+
+  WRONG_RETRIEVED by clause type (top 10):
+Clause Type                  N
+-------------------------  ---
+Document Name                7
+Parties                      6
+Agreement Date               6
+Effective Date               3
+Exclusivity                  2
+License Grant                2
+Insurance                    1
+Post-Termination Services    1
+Non-Transferable License     1
+Expiration Date              1
+
+  WRONG_EXTRACTION by clause type (top 10):
+Clause Type                    N
+---------------------------  ---
+Expiration Date                5
+Anti-Assignment                4
+Parties                        4
+Effective Date                 3
+Renewal Term                   3
+Warranty Duration              2
+Audit Rights                   2
+Document Name                  2
+Termination For Convenience    2
+Insurance                      2
+
+
+ABSENT CLAUSES
+  (N=278 absent-clause pairs)
+
+Category         N  %      Description
+-------------  ---  -----  --------------------------------------------------------
+TRUE_NEGATIVE  207  74.5%  agent correctly said clause absent
+HALLUCINATED    71  25.5%  agent claimed present; gold says absent (false positive)
+
+  HALLUCINATED by clause type (top 15):
+Clause Type                           FP Count
+----------------------------------  ----------
+Third Party Beneficiary                      7
+Termination For Convenience                  4
+Non-Transferable License                     4
+Affiliate License-Licensee                   4
+Uncapped Liability                           4
+Post-Termination Services                    4
+Change Of Control                            3
+Ip Ownership Assignment                      3
+Affiliate License-Licensor                   3
+Irrevocable Or Perpetual License             3
+Liquidated Damages                           3
+Price Restrictions                           3
+Notice Period To Terminate Renewal           2
+Agreement Date                               2
+Exclusivity                                  2
+
+------------------------------------------------------------------------
+STRUCTURAL NOTES
+------------------------------------------------------------------------
+  6 of 298 gold spans (2.0%) cross chunk boundaries.
+  These spans cannot achieve IoU=1.0 from a single chunk extraction.
+  This is a structural ceiling of the chunking strategy, not a model error.
+
+------------------------------------------------------------------------
+COST SUMMARY
+------------------------------------------------------------------------
+  Total queries:      410
+  Total tokens:       746,239 in + 65,764 out
+  Avg latency:        4.32 s/query
+
+------------------------------------------------------------------------
+LLM-JUDGE METHOD NOTE
+------------------------------------------------------------------------
+  Judge model: anthropic/claude-sonnet-4-6
+  Agent model: anthropic/claude-sonnet-4-6 (different model to avoid self-grading)
+  Rubric prompt (verbatim):
+    You are evaluating a contract clause extraction system.
+    
+    Gold standard clause text (expert-annotated):
+    {gold_text}
+    
+    System's answer:
+    {agent_answer}
+    
+    Question: Does the system's answer correctly identify the same clause and convey the same substantive meaning as the gold standard? Minor wording differences are acceptable. The answer must not contradict the gold standard or introduce material information not present in it.
+    
+    Respond with exactly one line:
+    CORRECT: <one-line justification>
+    or
+    INCORRECT: <one-line justification>
+
+========================================================================

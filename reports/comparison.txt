@@ -1,0 +1,80 @@
+================================================================================
+CUAD RAG EVAL — COMPARISON REPORT
+================================================================================
+Generated: 2026-06-30 13:17
+Runs:      baseline_haiku_k5, sonnet_k5, haiku_k10
+
+--------------------------------------------------------------------------------
+HEADLINE METRICS
+--------------------------------------------------------------------------------
+Metric               baseline_haiku_k5    sonnet_k5         haiku_k10
+-------------------  -------------------  ----------------  -------------------
+Citation Grounding   27.3%                24.2% (-3.0pp)    27.3% (0.0pp)
+Retrieval Recall@k   65.2% @5             65.2% (0.0pp) @5  76.5% (+11.4pp) @10
+False-Positive Rate  32.4%                25.5% (-6.8pp)    33.8% (+1.4pp)
+LLM-Judge Correct    24.6%                17.1% (-7.4pp)    31.9% (+7.3pp)
+
+--------------------------------------------------------------------------------
+TAXONOMY COMPARISON (present clauses)
+--------------------------------------------------------------------------------
+Metric              baseline_haiku_k5    sonnet_k5         haiku_k10
+------------------  -------------------  ----------------  ----------------
+SUCCESS             36 (27.3%)           32 (24.2%)  [-4]  36 (27.3%)  [0]
+WRONG_RETRIEVED     34 (25.8%)           34 (25.8%)  [0]   27 (20.5%)  [-7]
+WRONG_EXTRACTION    44 (33.3%)           45 (34.1%)  [+1]  53 (40.2%)  [+9]
+MISSED_BUT_PRESENT  18 (13.6%)           21 (15.9%)  [+3]  16 (12.1%)  [-2]
+
+--------------------------------------------------------------------------------
+TAXONOMY COMPARISON (absent clauses)
+--------------------------------------------------------------------------------
+Metric         baseline_haiku_k5    sonnet_k5           haiku_k10
+-------------  -------------------  ------------------  -----------------
+TRUE_NEGATIVE  188 (67.6%)          207 (74.5%)  [+19]  184 (66.2%)  [-4]
+HALLUCINATED   90 (32.4%)           71 (25.5%)  [-19]   94 (33.8%)  [+4]
+
+--------------------------------------------------------------------------------
+COST COMPARISON (actual tokens x pinned prices)
+--------------------------------------------------------------------------------
+  Pinned prices (per million tokens):
+    claude-haiku-4-5-20251001: $1 in / $5 out
+    claude-sonnet-4-6: $3 in / $15 out
+
+Run                Model                        Tokens In    Tokens Out  Cost     vs Baseline
+-----------------  -------------------------  -----------  ------------  -------  -------------
+baseline_haiku_k5  claude-haiku-4-5-20251001      745,829        70,047  $1.0961  —
+sonnet_k5          claude-sonnet-4-6              746,239        65,764  $3.2252  2.9x
+haiku_k10          claude-haiku-4-5-20251001    1,265,621        74,149  $1.6364  1.5x
+
+--------------------------------------------------------------------------------
+RETRIEVAL CEILING DIAGNOSIS
+--------------------------------------------------------------------------------
+  baseline_haiku_k5 (k=5): recall=65.2%  WRONG_RETRIEVED=34
+  haiku_k10 (k=10): recall=76.5%  WRONG_RETRIEVED=27
+  Recall delta: +11.4pp  |  WRONG_RETRIEVED delta: -7
+
+  Verdict: k=10 lifted recall meaningfully (+11.4pp) and shrank WRONG_RETRIEVED (-7).
+  The retrieval ceiling at k=5 was limiting performance.
+
+--------------------------------------------------------------------------------
+HYPOTHESIS VERDICT
+--------------------------------------------------------------------------------
+
+  sonnet_k5 vs baseline_haiku_k5:
+    Citation grounding: -3.0pp
+    False-positive rate: -6.8pp
+    WRONG_EXTRACTION: +1
+    HALLUCINATED: -19
+    WRONG_RETRIEVED: +0 (expect ~0 for model-only changes)
+    Cost: 2.9x baseline
+    -> MIXED: improved on some metrics, regressed on others
+
+  haiku_k10 vs baseline_haiku_k5:
+    Citation grounding: +0.0pp
+    False-positive rate: +1.4pp
+    WRONG_EXTRACTION: +9
+    HALLUCINATED: +4
+    WRONG_RETRIEVED: -7 (expect ~0 for model-only changes)
+    Cost: 1.5x baseline
+    -> FLAT: no meaningful change from baseline
+
+================================================================================
