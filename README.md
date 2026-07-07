@@ -75,7 +75,7 @@ The harness is already built to measure all three.
 
 ## Quick start
 
-​```bash
+```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
@@ -85,24 +85,23 @@ export OPENAI_API_KEY=...
 
 # Pull a small subset (10 contracts), ingest, run, and score
 make all N=10
-​```
+```
 
-Reports are written to `reports/`. `make all` runs ingest, agent, and eval end to
-end; the individual steps are `make ingest N=10`, `make run`, `make eval`.
+Reports are written to `reports/`. `make all` runs ingest, agent, and eval end to end; the individual steps are `make ingest N=10`, `make run`, `make eval`.
 
 ## Configuration
 
 Edit `config.yaml` to swap models and retrieval parameters:
 
-​```yaml
+```yaml
 embedding_model: text-embedding-3-small
-llm_model: claude-haiku-4-5     # or claude-sonnet-4-6, gpt-4o, etc.
-llm_provider: anthropic         # anthropic | openai
-retrieval_k: 5                  # top-k chunks per query
+llm_model: claude-haiku-4-5
+llm_provider: anthropic
+retrieval_k: 5
 chunk_size: 512
 chunk_overlap: 64
-iou_threshold: 0.5              # citation grounding hit threshold
-​```
+iou_threshold: 0.5
+```
 
 ## Dataset
 
@@ -112,7 +111,7 @@ Source: https://huggingface.co/datasets/theatticusproject/cuad
 
 ## Project layout
 
-​```
+```
 ingest/       parse contracts, chunk clause-aware, write to data/processed/
 retrieval/    embed chunks, build vector store, top-k search
 agent/        grounded generation, structured JSON output
@@ -121,4 +120,4 @@ reports/      output tables and comparison reports
 data/         processed chunks (raw contracts gitignored)
 config.yaml   all tunable parameters
 cli.py        entry point for all commands
-​```
+```
